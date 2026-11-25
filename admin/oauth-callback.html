@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https:; connect-src 'self' https://api.github.com https://unpkg.com https://github.com; font-src 'self' https://unpkg.com data:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="robots" content="noindex" />
+  <title>登录完成</title>
+</head>
+<body>
+  <p>登录完成，可以关闭此窗口。</p>
+  <script>
+    var msg = "";
+    try { msg = decodeURIComponent(location.hash.slice(1)); } catch (e) { msg = location.hash.slice(1); }
+    if (window.opener && msg) {
+      window.opener.postMessage(msg, "*");
+    }
+    window.close();
+  </script>
+</body>
+</html>
