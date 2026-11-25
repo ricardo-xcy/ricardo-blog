@@ -1,13 +1,3 @@
-if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", function (user) {
-      if (!user) {
-        window.netlifyIdentity.on("login", function () {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-
   var PARTS = {
     "前传": { desc: "开始之前。" },
     "正史": { desc: "开始之后。" }
