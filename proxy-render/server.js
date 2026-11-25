@@ -33,6 +33,12 @@ const server = http.createServer(async function (req, res) {
   const proto = req.headers["x-forwarded-proto"] || "https";
   const origin = proto + "://" + (req.headers["x-forwarded-host"] || req.headers.host);
 
+  if (url.pathname === "/" || url.pathname === "/healthz") {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("OK");
+    return;
+  }
+
   if (url.pathname === "/api/auth") {
     const clientId = process.env.GITHUB_CLIENT_ID;
     if (!clientId) {
