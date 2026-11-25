@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ricardo 的博客</title>
+<meta name="description" content="ricardo 的个人博客，在厦门，写点东西。" />
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.8; color: #262626; background: #faf8f4;
+    max-width: 720px; margin: 0 auto; padding: 32px 20px 64px;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { color: #e8e6e1; background: #171512; }
+    a { color: #9ecbff; }
+    .post { border-color: #33302b; }
+    .hero figcaption, .meta, footer { color: #a39e94; }
+    .back { color: #9ecbff; }
+  }
+  a { color: #1a6fd4; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { margin-bottom: 28px; }
+  header h1 { font-size: 30px; letter-spacing: 1px; }
+  header p { color: #777; margin-top: 6px; }
+  .hero { margin-bottom: 32px; }
+  .hero img { width: 100%; border-radius: 12px; display: block; }
+  .hero figcaption { font-size: 13px; color: #999; margin-top: 8px; }
+  h2.section { font-size: 18px; margin: 36px 0 12px; }
+  .post { padding: 16px 0; border-top: 1px solid #e5e0d8; cursor: pointer; }
+  .post:hover h3 { text-decoration: underline; }
+  .post h3 { font-size: 19px; line-height: 1.5; }
+  .post .meta { font-size: 13px; color: #999; margin-bottom: 4px; }
+  .post p { color: #666; font-size: 15px; }
+  @media (prefers-color-scheme: dark) { .post p { color: #b0aca2; } }
+  #article { display: none; }
+  #article h1 { font-size: 26px; line-height: 1.4; margin-bottom: 8px; }
+  #article .meta { color: #999; font-size: 13px; margin-bottom: 20px; }
+  #article .body { font-size: 16.5px; }
+  #article .body h2 { font-size: 20px; margin: 28px 0 10px; }
+  #article .body h3 { font-size: 17px; margin: 22px 0 8px; }
+  #article .body p { margin-bottom: 14px; }
+  #article .body ul, #article .body ol { margin: 0 0 14px 22px; }
+  #article .body li { margin-bottom: 6px; }
+  #article .body img { max-width: 100%; border-radius: 8px; }
+  #article .body blockquote { border-left: 3px solid #ddd; padding-left: 14px; color: #888; margin-bottom: 14px; }
+  .back { display: inline-block; margin-bottom: 20px; cursor: pointer; color: #1a6fd4; background: none; border: none; font-size: 15px; padding: 0; font-family: inherit; }
+  .about { color: #666; font-size: 15px; }
+  @media (prefers-color-scheme: dark) { .about { color: #b0aca2; } }
+  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid #e5e0d8; font-size: 13px; color: #999; display: flex; justify-content: space-between; }
+  footer a { color: #999; }
+  .empty { color: #999; padding: 24px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ricardo</h1>
+  <p>在厦门，写点东西。</p>
+</header>
+
+<main id="list-view">
+  <figure class="hero">
+    <img src="images/kinmen.webp" alt="莒光楼与对岸的厦门" />
+    <figcaption>莒光楼与对岸的厦门——一水之隔。</figcaption>
+  </figure>
+
+  <h2 class="section">文章</h2>
+  <div id="post-list"><p class="empty">加载中……</p></div>
+
+  <h2 class="section">关于我</h2>
+  <p class="about">厦门人。喜欢旅行、捣鼓技术、看美股，正在学剪视频。想到什么就写下来，放在这里。</p>
+</main>
+
+<article id="article">
+  <button class="back" id="back-btn">← 返回文章列表</button>
+  <h1 id="article-title"></h1>
+  <div class="meta" id="article-meta"></div>
+  <div class="body" id="article-body"></div>
+</article>
+
+<footer>
+  <span>ricardo · xcy1.de5.net</span>
+  <span><a href="/admin/">写文章</a> · Powered by Netlify</span>
+</footer>
+
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", function (user) {
+      if (!user) {
+        window.netlifyIdentity.on("login", function () {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+
+  var listView = document.getElementById("list-view");
+  var articleView = document.getElementById("article");
+  var postList = document.getElementById("post-list");
+
+  function fmtDate(d) {
+    if (!d) return "";
+    var dt = new Date(d);
+    if (isNaN(dt)) return d;
+    return dt.getFullYear() + "年" + (dt.getMonth() + 1) + "月" + dt.getDate() + "日";
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function showList() {
+    articleView.style.display = "none";
+    listView.style.display = "block";
+    document.title = "ricardo 的博客";
+    window.scrollTo(0, 0);
+  }
+
+  function showPost(slug) {
+    fetch("posts/" + slug + ".html").then(function (r) {
+      if (!r.ok) throw new Error("not found");
+      return r.text();
+    }).then(function (html) {
+      return fetch("posts.json").then(function (r) { return r.json(); }).then(function (posts) {
+        var post = null;
+        for (var i = 0; i < posts.length; i++) {
+          if (posts[i].slug === slug) { post = posts[i]; break; }
+        }
+        document.getElementById("article-title").textContent = post ? post.title : slug;
+        document.getElementById("article-meta").textContent = post ? fmtDate(post.date) : "";
+        document.getElementById("article-body").innerHTML = html;
+        listView.style.display = "none";
+        articleView.style.display = "block";
+        document.title = (post ? post.title : slug) + " · ricardo 的博客";
+        window.scrollTo(0, 0);
+      });
+    }).catch(function () {
+      showList();
+    });
+  }
+
+  function route() {
+    var m = location.hash.match(/^#\/post\/(.+)$/);
+    if (m) { showPost(decodeURIComponent(m[1])); }
+    else { showList(); }
+  }
+
+  fetch("posts.json").then(function (r) { return r.json(); }).then(function (posts) {
+    if (!posts.length) {
+      postList.innerHTML = '<p class="empty">还没有文章。</p>';
+      return;
+    }
+    var html = "";
+    posts.forEach(function (p) {
+      html += '<div class="post" data-slug="' + esc(p.slug) + '">'
+        + '<div class="meta">' + esc(fmtDate(p.date)) + '</div>'
+        + '<h3>' + esc(p.title) + '</h3>'
+        + (p.description ? '<p>' + esc(p.description) + '</p>' : '')
+        + '</div>';
+    });
+    postList.innerHTML = html;
+    postList.querySelectorAll(".post").forEach(function (el) {
+      el.addEventListener("click", function () {
+        location.hash = "#/post/" + encodeURIComponent(el.getAttribute("data-slug"));
+      });
+    });
+  }).catch(function () {
+    postList.innerHTML = '<p class="empty">文章列表加载失败，刷新试试。</p>';
+  });
+
+  document.getElementById("back-btn").addEventListener("click", function () {
+    location.hash = "";
+  });
+
+  window.addEventListener("hashchange", route);
+  route();
+</script>
+</body>
+</html>
