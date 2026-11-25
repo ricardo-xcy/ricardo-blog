@@ -2,7 +2,8 @@ backend:
   name: github
   repo: ricardo-xcy/ricardo-blog
   branch: main
-  auth_endpoint: https://wdmmuvbebiujujmtydid.supabase.co/functions/v1/auth/api/auth
+  base_url: https://wdmmuvbebiujujmtydid.supabase.co/functions/v1/auth
+  auth_endpoint: /api/auth
 
 site_url: https://xcy1.de5.net
 display_url: https://xcy1.de5.net
