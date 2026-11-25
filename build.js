@@ -1,9 +1,18 @@
 // Build script: reads posts/*.md, renders each article to HTML,
-// writes posts.json (article list) and copies static files into dist/.
+// writes posts.json (article list) and feed.xml (RSS), and copies
+// static files into dist/.
 const fs = require("fs");
 const path = require("path");
 const matter = require("gray-matter");
 const { marked } = require("marked");
+
+const SITE_URL = "https://xcy1.de5.net";
+const SITE_TITLE = "ricardo 的博客";
+const SITE_DESC = "在厦门，写点东西。";
+
+const root = __dirname;
+const dist = path.join(root, "dist");
+const postsDir = path.join(root, "posts");
 
 // YAML dates parse to Date objects; format them as YYYY-MM-DD in UTC
 // so the day never shifts with the build server's timezone.
@@ -18,9 +27,27 @@ function fmtDate(d) {
   return String(d).slice(0, 10);
 }
 
-const root = __dirname;
-const dist = path.join(root, "dist");
-const postsDir = path.join(root, "posts");
+function toRfcDate(d) {
+  if (!d) return new Date().toUTCString();
+  const dt = d instanceof Date ? d : new Date(d);
+  return isNaN(dt) ? new Date().toUTCString() : dt.toUTCString();
+}
+
+function escXml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function normTags(t) {
+  if (Array.isArray(t)) return t.map(String);
+  if (typeof t === "string" && t.trim()) {
+    return t.split(/[,，]/).map((x) => x.trim()).filter(Boolean);
+  }
+  return [];
+}
 
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(path.join(dist, "posts"), { recursive: true });
@@ -52,6 +79,7 @@ for (const file of files) {
     title: data.title || slug,
     date: fmtDate(data.date),
     description: excerpt,
+    tags: normTags(data.tags),
   });
 }
 
@@ -60,4 +88,34 @@ fs.writeFileSync(
   path.join(dist, "posts.json"),
   JSON.stringify(posts, null, 2)
 );
-console.log("Built " + posts.length + " post(s).");
+
+// RSS feed
+const items = posts
+  .map((p) => {
+    const link = SITE_URL + "/#/post/" + encodeURIComponent(p.slug);
+    return (
+      "    <item>\n" +
+      "      <title>" + escXml(p.title) + "</title>\n" +
+      "      <link>" + escXml(link) + "</link>\n" +
+      "      <guid>" + escXml(link) + "</guid>\n" +
+      "      <pubDate>" + toRfcDate(p.date) + "</pubDate>\n" +
+      "      <description>" + escXml(p.description) + "</description>\n" +
+      "    </item>"
+    );
+  })
+  .join("\n");
+
+const feed =
+  '<?xml version="1.0" encoding="UTF-8"?>\n' +
+  '<rss version="2.0">\n' +
+  "  <channel>\n" +
+  "    <title>" + escXml(SITE_TITLE) + "</title>\n" +
+  "    <link>" + SITE_URL + "/</link>\n" +
+  "    <description>" + escXml(SITE_DESC) + "</description>\n" +
+  "    <language>zh-CN</language>\n" +
+  (items ? items + "\n" : "") +
+  "  </channel>\n" +
+  "</rss>\n";
+fs.writeFileSync(path.join(dist, "feed.xml"), feed);
+
+console.log("Built " + posts.length + " post(s) + feed.xml.");

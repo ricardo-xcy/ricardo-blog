@@ -5,40 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ricardo 的博客</title>
 <meta name="description" content="ricardo 的个人博客，在厦门，写点东西。" />
+<link rel="alternate" type="application/rss+xml" title="ricardo 的博客" href="/feed.xml" />
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  // 主题：优先用上次的选择，否则跟随系统
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("blog-theme"); } catch (e) {}
+    if (!t) { t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light"; }
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
 <style>
-  :root { color-scheme: light dark; }
+  :root {
+    --bg: #faf8f4; --text: #262626; --muted: #8a8378; --card: #ffffff;
+    --border: #e8e2d8; --accent: #b4552d; --accent-soft: #f6e8df;
+    --link: #1a6fd4; --shadow: rgba(60, 40, 20, 0.08);
+  }
+  html[data-theme="dark"] {
+    --bg: #171512; --text: #e8e6e1; --muted: #a39e94; --card: #211e1a;
+    --border: #35322c; --accent: #e08a5c; --accent-soft: #2e241c;
+    --link: #9ecbff; --shadow: rgba(0, 0, 0, 0.35);
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
     font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-    line-height: 1.8; color: #262626; background: #faf8f4;
-    max-width: 720px; margin: 0 auto; padding: 32px 20px 64px;
+    line-height: 1.8; color: var(--text); background: var(--bg);
+    max-width: 720px; margin: 0 auto; padding: 28px 20px 64px;
+    transition: background 0.3s, color 0.3s;
   }
-  @media (prefers-color-scheme: dark) {
-    body { color: #e8e6e1; background: #171512; }
-    a { color: #9ecbff; }
-    .post { border-color: #33302b; }
-    .hero figcaption, .meta, footer { color: #a39e94; }
-    .back { color: #9ecbff; }
-  }
-  a { color: #1a6fd4; text-decoration: none; }
+  a { color: var(--link); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  header { margin-bottom: 28px; }
-  header h1 { font-size: 30px; letter-spacing: 1px; }
-  header p { color: #777; margin-top: 6px; }
-  .hero { margin-bottom: 32px; }
-  .hero img { width: 100%; border-radius: 12px; display: block; }
-  .hero figcaption { font-size: 13px; color: #999; margin-top: 8px; }
-  h2.section { font-size: 18px; margin: 36px 0 12px; }
-  .post { padding: 16px 0; border-top: 1px solid #e5e0d8; cursor: pointer; }
-  .post:hover h3 { text-decoration: underline; }
+
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--accent); z-index: 100; transition: width 0.1s linear; }
+
+  header { margin-bottom: 24px; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  header h1 { font-size: 32px; letter-spacing: 1px; line-height: 1.2; }
+  header h1 a { color: var(--text); }
+  header h1 a:hover { text-decoration: none; }
+  header .tagline { color: var(--muted); margin-top: 6px; }
+  #theme-btn {
+    flex-shrink: 0; margin-left: 16px; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    font-size: 13px; cursor: pointer; font-family: inherit;
+  }
+  #theme-btn:hover { border-color: var(--accent); }
+  nav { margin-top: 16px; font-size: 14px; }
+  nav a { margin-right: 18px; color: var(--muted); }
+  nav a:hover { color: var(--accent); }
+
+  .hero { margin-bottom: 28px; }
+  .hero img { width: 100%; border-radius: 14px; display: block; box-shadow: 0 6px 24px var(--shadow); }
+  .hero figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+  #search {
+    width: 100%; padding: 11px 16px; font-size: 15px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    font-family: inherit; outline: none; margin-bottom: 14px;
+  }
+  #search:focus { border-color: var(--accent); }
+  #tags { margin-bottom: 8px; }
+  .chip {
+    display: inline-block; padding: 3px 12px; margin: 0 8px 8px 0; font-size: 13px;
+    border-radius: 999px; border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); cursor: pointer;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  h2.section { font-size: 18px; margin: 28px 0 6px; }
+  .post {
+    padding: 18px 20px; margin-top: 14px; border: 1px solid var(--border); border-radius: 12px;
+    background: var(--card); cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .post:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
+  .post:hover h3 { color: var(--accent); }
   .post h3 { font-size: 19px; line-height: 1.5; }
-  .post .meta { font-size: 13px; color: #999; margin-bottom: 4px; }
-  .post p { color: #666; font-size: 15px; }
-  @media (prefers-color-scheme: dark) { .post p { color: #b0aca2; } }
+  .post .meta { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .post p { color: var(--muted); font-size: 15px; }
+  .post .tag { display: inline-block; font-size: 12px; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 9px; margin: 8px 6px 0 0; }
+  .empty { color: var(--muted); padding: 24px 0; }
+
   #article { display: none; }
-  #article h1 { font-size: 26px; line-height: 1.4; margin-bottom: 8px; }
-  #article .meta { color: #999; font-size: 13px; margin-bottom: 20px; }
+  #article h1 { font-size: 27px; line-height: 1.4; margin-bottom: 8px; }
+  #article .meta { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  #article .meta .tag { display: inline-block; font-size: 12px; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 9px; margin-left: 6px; }
   #article .body { font-size: 16.5px; }
   #article .body h2 { font-size: 20px; margin: 28px 0 10px; }
   #article .body h3 { font-size: 17px; margin: 22px 0 8px; }
@@ -46,18 +99,47 @@
   #article .body ul, #article .body ol { margin: 0 0 14px 22px; }
   #article .body li { margin-bottom: 6px; }
   #article .body img { max-width: 100%; border-radius: 8px; }
-  #article .body blockquote { border-left: 3px solid #ddd; padding-left: 14px; color: #888; margin-bottom: 14px; }
-  .back { display: inline-block; margin-bottom: 20px; cursor: pointer; color: #1a6fd4; background: none; border: none; font-size: 15px; padding: 0; font-family: inherit; }
-  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid #e5e0d8; font-size: 13px; color: #999; display: flex; justify-content: space-between; }
-  footer a { color: #999; }
-  .empty { color: #999; padding: 24px 0; }
+  #article .body blockquote { border-left: 3px solid var(--border); padding-left: 14px; color: var(--muted); margin-bottom: 14px; }
+  #article .body a { word-break: break-all; }
+  .back { display: inline-block; margin-bottom: 20px; cursor: pointer; color: var(--link); background: none; border: none; font-size: 15px; padding: 0; font-family: inherit; }
+  .share-row { margin: 32px 0 8px; padding-top: 20px; border-top: 1px solid var(--border); }
+  #copy-btn {
+    padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); font-size: 14px; cursor: pointer; font-family: inherit;
+  }
+  #copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  #giscus { margin-top: 32px; }
+
+  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+  footer .row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+  #stats { margin-top: 8px; }
+
+  #top-btn {
+    position: fixed; right: 20px; bottom: 24px; width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    font-size: 18px; cursor: pointer; display: none; box-shadow: 0 4px 16px var(--shadow); z-index: 90;
+  }
+  #top-btn:hover { border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
 <body>
+<div id="progress"></div>
 
 <header>
-  <h1>ricardo</h1>
-  <p>在厦门，写点东西。</p>
+  <div class="header-top">
+    <div>
+      <h1><a href="#" id="home-link">ricardo</a></h1>
+      <p class="tagline">在厦门，写点东西。</p>
+    </div>
+    <button id="theme-btn" type="button" aria-label="切换深色 / 浅色模式"></button>
+  </div>
+  <nav>
+    <a href="#" id="nav-home">首页</a>
+    <a href="/feed.xml">RSS 订阅</a>
+    <a href="/admin/">写文章</a>
+  </nav>
 </header>
 
 <main id="list-view">
@@ -66,9 +148,11 @@
     <figcaption>莒光楼与对岸的厦门——一水之隔。</figcaption>
   </figure>
 
+  <input id="search" type="search" placeholder="搜索文章…" autocomplete="off" />
+  <div id="tags"></div>
+
   <h2 class="section">文章</h2>
   <div id="post-list"><p class="empty">加载中……</p></div>
-
 </main>
 
 <article id="article">
@@ -76,13 +160,23 @@
   <h1 id="article-title"></h1>
   <div class="meta" id="article-meta"></div>
   <div class="body" id="article-body"></div>
+  <div class="share-row">
+    <button id="copy-btn" type="button">复制文章链接</button>
+  </div>
+  <div id="giscus"></div>
 </article>
 
 <footer>
-  <span>ricardo · xcy1.de5.net</span>
-  <span><a href="/admin/">写文章</a> · Powered by Netlify</span>
+  <div class="row">
+    <span>ricardo · xcy1.de5.net</span>
+    <span><a href="/feed.xml">RSS</a> · <a href="/admin/">写文章</a> · Powered by Netlify</span>
+  </div>
+  <div id="stats">本站总访问量 <span id="busuanzi_value_site_pv">…</span> · 访客 <span id="busuanzi_value_site_uv">…</span></div>
 </footer>
 
+<button id="top-btn" type="button" title="回到顶部">↑</button>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <script>
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", function (user) {
@@ -97,67 +191,92 @@
   var listView = document.getElementById("list-view");
   var articleView = document.getElementById("article");
   var postList = document.getElementById("post-list");
+  var tagsBox = document.getElementById("tags");
+  var searchInput = document.getElementById("search");
+  var allPosts = [];
+  var query = "";
+  var activeTag = "";
+  var currentSlug = "";
 
+  // ---- 主题 ----
+  var themeBtn = document.getElementById("theme-btn");
+  function currentTheme() {
+    return document.documentElement.getAttribute("data-theme") || "light";
+  }
+  function updateThemeBtn() {
+    themeBtn.textContent = currentTheme() === "dark" ? "☀ 浅色" : "☾ 深色";
+  }
+  function setTheme(t) {
+    document.documentElement.setAttribute("data-theme", t);
+    try { localStorage.setItem("blog-theme", t); } catch (e) {}
+    updateThemeBtn();
+    if (articleView.style.display === "block" && currentSlug) loadGiscus(currentSlug);
+  }
+  themeBtn.addEventListener("click", function () {
+    setTheme(currentTheme() === "dark" ? "light" : "dark");
+  });
+  updateThemeBtn();
+
+  // ---- 工具 ----
   function fmtDate(d) {
     if (!d) return "";
     var dt = new Date(d);
     if (isNaN(dt)) return d;
     return dt.getFullYear() + "年" + (dt.getMonth() + 1) + "月" + dt.getDate() + "日";
   }
-
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-
-  function showList() {
-    articleView.style.display = "none";
-    listView.style.display = "block";
-    document.title = "ricardo 的博客";
-    window.scrollTo(0, 0);
+  function tagsOf(p) {
+    if (Array.isArray(p.tags)) return p.tags;
+    if (typeof p.tags === "string" && p.tags) return p.tags.split(",").map(function (x) { return x.trim(); }).filter(Boolean);
+    return [];
   }
 
-  function showPost(slug) {
-    fetch("posts/" + slug + ".html").then(function (r) {
-      if (!r.ok) throw new Error("not found");
-      return r.text();
-    }).then(function (html) {
-      return fetch("posts.json").then(function (r) { return r.json(); }).then(function (posts) {
-        var post = null;
-        for (var i = 0; i < posts.length; i++) {
-          if (posts[i].slug === slug) { post = posts[i]; break; }
-        }
-        document.getElementById("article-title").textContent = post ? post.title : slug;
-        document.getElementById("article-meta").textContent = post ? fmtDate(post.date) : "";
-        document.getElementById("article-body").innerHTML = html;
-        listView.style.display = "none";
-        articleView.style.display = "block";
-        document.title = (post ? post.title : slug) + " · ricardo 的博客";
-        window.scrollTo(0, 0);
+  // ---- 列表渲染（搜索 + 标签筛选）----
+  function renderTags() {
+    var seen = {};
+    var tags = [];
+    allPosts.forEach(function (p) {
+      tagsOf(p).forEach(function (t) {
+        if (!seen[t]) { seen[t] = true; tags.push(t); }
       });
-    }).catch(function () {
-      showList();
+    });
+    var html = '<span class="chip' + (activeTag === "" ? " active" : "") + '" data-tag="">全部</span>';
+    tags.forEach(function (t) {
+      html += '<span class="chip' + (activeTag === t ? " active" : "") + '" data-tag="' + esc(t) + '">' + esc(t) + "</span>";
+    });
+    tagsBox.innerHTML = html;
+    tagsBox.querySelectorAll(".chip").forEach(function (el) {
+      el.addEventListener("click", function () {
+        activeTag = el.getAttribute("data-tag");
+        renderTags();
+        renderList();
+      });
     });
   }
-
-  function route() {
-    var m = location.hash.match(/^#\/post\/(.+)$/);
-    if (m) { showPost(decodeURIComponent(m[1])); }
-    else { showList(); }
-  }
-
-  fetch("posts.json").then(function (r) { return r.json(); }).then(function (posts) {
-    if (!posts.length) {
-      postList.innerHTML = '<p class="empty">还没有文章。</p>';
+  function renderList() {
+    var q = query.trim().toLowerCase();
+    var filtered = allPosts.filter(function (p) {
+      if (activeTag && tagsOf(p).indexOf(activeTag) === -1) return false;
+      if (!q) return true;
+      var hay = (p.title + " " + (p.description || "") + " " + tagsOf(p).join(" ")).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    if (!filtered.length) {
+      postList.innerHTML = '<p class="empty">没有找到相关文章。</p>';
       return;
     }
     var html = "";
-    posts.forEach(function (p) {
+    filtered.forEach(function (p) {
+      var tagHtml = tagsOf(p).map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("");
       html += '<div class="post" data-slug="' + esc(p.slug) + '">'
         + '<div class="meta">' + esc(fmtDate(p.date)) + '</div>'
         + '<h3>' + esc(p.title) + '</h3>'
         + (p.description ? '<p>' + esc(p.description) + '</p>' : '')
+        + tagHtml
         + '</div>';
     });
     postList.innerHTML = html;
@@ -166,16 +285,128 @@
         location.hash = "#/post/" + encodeURIComponent(el.getAttribute("data-slug"));
       });
     });
+  }
+  searchInput.addEventListener("input", function () {
+    query = searchInput.value;
+    renderList();
+  });
+
+  // ---- 文章页 ----
+  function showList() {
+    currentSlug = "";
+    articleView.style.display = "none";
+    listView.style.display = "block";
+    document.title = "ricardo 的博客";
+    window.scrollTo(0, 0);
+  }
+  function showPost(slug) {
+    fetch("posts/" + slug + ".html").then(function (r) {
+      if (!r.ok) throw new Error("not found");
+      return r.text();
+    }).then(function (html) {
+      var post = null;
+      for (var i = 0; i < allPosts.length; i++) {
+        if (allPosts[i].slug === slug) { post = allPosts[i]; break; }
+      }
+      currentSlug = slug;
+      document.getElementById("article-title").textContent = post ? post.title : slug;
+      var meta = post ? fmtDate(post.date) : "";
+      var tagHtml = post ? tagsOf(post).map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") : "";
+      document.getElementById("article-meta").innerHTML = esc(meta) + tagHtml;
+      document.getElementById("article-body").innerHTML = html;
+      listView.style.display = "none";
+      articleView.style.display = "block";
+      document.title = (post ? post.title : slug) + " · ricardo 的博客";
+      window.scrollTo(0, 0);
+      loadGiscus(slug);
+    }).catch(function () {
+      showList();
+    });
+  }
+  function route() {
+    var m = location.hash.match(/^#\/post\/(.+)$/);
+    if (m) { showPost(decodeURIComponent(m[1])); }
+    else { showList(); }
+  }
+  document.getElementById("back-btn").addEventListener("click", function () { location.hash = ""; });
+  document.getElementById("home-link").addEventListener("click", function (e) { e.preventDefault(); location.hash = ""; });
+  document.getElementById("nav-home").addEventListener("click", function (e) { e.preventDefault(); location.hash = ""; });
+  window.addEventListener("hashchange", route);
+
+  // ---- 评论（Giscus）----
+  function loadGiscus(slug) {
+    var container = document.getElementById("giscus");
+    container.innerHTML = "";
+    var s = document.createElement("script");
+    s.src = "https://giscus.app/client.js";
+    s.setAttribute("data-repo", "ricardo-xcy/ricardo-blog");
+    s.setAttribute("data-repo-id", "R_kgDOV7Ks_Q");
+    s.setAttribute("data-category", "General");
+    s.setAttribute("data-category-id", "DIC_kwDOV7Ks_c4DL7MT");
+    s.setAttribute("data-mapping", "specific");
+    s.setAttribute("data-term", slug);
+    s.setAttribute("data-strict", "0");
+    s.setAttribute("data-reactions-enabled", "1");
+    s.setAttribute("data-emit-metadata", "0");
+    s.setAttribute("data-input-position", "bottom");
+    s.setAttribute("data-theme", currentTheme());
+    s.setAttribute("data-lang", "zh-CN");
+    s.setAttribute("crossorigin", "anonymous");
+    s.async = true;
+    container.appendChild(s);
+  }
+
+  // ---- 复制文章链接 ----
+  document.getElementById("copy-btn").addEventListener("click", function () {
+    var btn = this;
+    var url = location.href;
+    function done() {
+      btn.textContent = "已复制";
+      setTimeout(function () { btn.textContent = "复制文章链接"; }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, function () { fallbackCopy(url); done(); });
+    } else { fallbackCopy(url); done(); }
+    function fallbackCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  });
+
+  // ---- 阅读进度 + 回到顶部 ----
+  var progressBar = document.getElementById("progress");
+  var topBtn = document.getElementById("top-btn");
+  window.addEventListener("scroll", function () {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    progressBar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    topBtn.style.display = h.scrollTop > 300 ? "block" : "none";
+  }, { passive: true });
+  topBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+  // ---- 加载文章列表 ----
+  fetch("posts.json").then(function (r) { return r.json(); }).then(function (posts) {
+    allPosts = posts;
+    renderTags();
+    renderList();
+    route();
   }).catch(function () {
     postList.innerHTML = '<p class="empty">文章列表加载失败，刷新试试。</p>';
+    route();
   });
 
-  document.getElementById("back-btn").addEventListener("click", function () {
-    location.hash = "";
-  });
-
-  window.addEventListener("hashchange", route);
-  route();
+  // 不蒜子加载失败时隐藏统计行
+  setTimeout(function () {
+    var pv = document.getElementById("busuanzi_value_site_pv");
+    if (pv && !pv.textContent.trim()) {
+      var stats = document.getElementById("stats");
+      if (stats) stats.style.display = "none";
+    }
+  }, 4000);
 </script>
 </body>
 </html>
