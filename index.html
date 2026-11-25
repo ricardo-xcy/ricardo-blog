@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ricardo 的博客</title>
-<meta name="description" content="ricardo 的个人博客，在厦门，写点东西。" />
-<link rel="alternate" type="application/rss+xml" title="ricardo 的博客" href="/feed.xml" />
+<title>ricardo 的传记</title>
+<meta name="description" content="一些事，一些人。" />
+<link rel="alternate" type="application/rss+xml" title="ricardo 的传记" href="/feed.xml" />
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script src="assets/theme.js"></script>
 <style>
@@ -48,17 +48,29 @@
   nav a { margin-right: 18px; color: var(--muted); }
   nav a:hover { color: var(--accent); }
 
-  .hero { margin-bottom: 28px; }
-  .hero img { width: 100%; border-radius: 14px; display: block; box-shadow: 0 6px 24px var(--shadow); }
-  .hero figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  /* 首页：两大入口 */
+  .part-card {
+    display: block; padding: 30px 26px; margin-top: 18px; border: 1px solid var(--border);
+    border-radius: 14px; background: var(--card); cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .part-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
+  .part-card:hover h2 { color: var(--accent); }
+  .part-card h2 { font-size: 26px; letter-spacing: 4px; }
+  .part-card p { color: var(--muted); margin-top: 6px; }
+  .part-card .count { display: inline-block; margin-top: 12px; font-size: 13px; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 2px 12px; }
 
+  /* 分部页 */
+  .crumb { display: inline-block; margin-bottom: 16px; cursor: pointer; color: var(--link); background: none; border: none; font-size: 15px; padding: 0; font-family: inherit; }
+  #section-view h2 { font-size: 26px; letter-spacing: 4px; }
+  #section-view .sub { color: var(--muted); margin-top: 4px; }
   #search {
     width: 100%; padding: 11px 16px; font-size: 15px; border-radius: 999px;
     border: 1px solid var(--border); background: var(--card); color: var(--text);
-    font-family: inherit; outline: none; margin-bottom: 14px;
+    font-family: inherit; outline: none; margin: 18px 0 6px;
   }
   #search:focus { border-color: var(--accent); }
-  #tags { margin-bottom: 8px; }
+  #kind-chips { margin-bottom: 8px; }
   .chip {
     display: inline-block; padding: 3px 12px; margin: 0 8px 8px 0; font-size: 13px;
     border-radius: 999px; border: 1px solid var(--border); background: var(--card);
@@ -67,19 +79,20 @@
   .chip:hover { border-color: var(--accent); color: var(--accent); }
   .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  h2.section { font-size: 18px; margin: 28px 0 6px; }
-  .post {
+  .entry {
     padding: 18px 20px; margin-top: 14px; border: 1px solid var(--border); border-radius: 12px;
     background: var(--card); cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
   }
-  .post:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
-  .post:hover h3 { color: var(--accent); }
-  .post h3 { font-size: 19px; line-height: 1.5; }
-  .post .meta { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
-  .post p { color: var(--muted); font-size: 15px; }
-  .post .tag { display: inline-block; font-size: 12px; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 9px; margin: 8px 6px 0 0; }
+  .entry:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
+  .entry:hover h3 { color: var(--accent); }
+  .entry h3 { font-size: 19px; line-height: 1.5; }
+  .entry .meta { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .entry p { color: var(--muted); font-size: 15px; }
+  .entry .kind { display: inline-block; font-size: 12px; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 9px; margin-right: 6px; }
   .empty { color: var(--muted); padding: 24px 0; }
+  .empty a { color: var(--link); }
 
+  /* 文章页 */
   #article { display: none; }
   #article h1 { font-size: 27px; line-height: 1.4; margin-bottom: 8px; }
   #article .meta { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
@@ -143,8 +156,8 @@
 <header>
   <div class="header-top">
     <div>
-      <h1><a href="#" id="home-link">ricardo</a></h1>
-      <p class="tagline">在厦门，写点东西。</p>
+      <h1><a href="#" id="home-link">ricardo 的传记</a></h1>
+      <p class="tagline">一些事，一些人。</p>
     </div>
     <button id="theme-btn" type="button" aria-label="切换深色 / 浅色模式"></button>
   </div>
@@ -155,21 +168,30 @@
   </nav>
 </header>
 
-<main id="list-view">
-  <figure class="hero">
-    <img src="images/kinmen.webp" alt="莒光楼与对岸的厦门" />
-    <figcaption>莒光楼与对岸的厦门——一水之隔。</figcaption>
-  </figure>
+<main id="home-view">
+  <div class="part-card" id="card-prequel">
+    <h2>前传</h2>
+    <p>开始之前。</p>
+    <span class="count" id="count-prequel"></span>
+  </div>
+  <div class="part-card" id="card-main">
+    <h2>正史</h2>
+    <p>开始之后。</p>
+    <span class="count" id="count-main"></span>
+  </div>
+</main>
 
-  <input id="search" type="search" placeholder="搜索文章…" autocomplete="off" />
-  <div id="tags"></div>
-
-  <h2 class="section">文章</h2>
-  <div id="post-list"><p class="empty">加载中……</p></div>
+<main id="section-view" style="display:none">
+  <button class="crumb" id="section-back">← 首页</button>
+  <h2 id="section-title"></h2>
+  <p class="sub" id="section-sub"></p>
+  <input id="search" type="search" placeholder="搜索…" autocomplete="off" />
+  <div id="kind-chips"></div>
+  <div id="entry-list"></div>
 </main>
 
 <article id="article">
-  <button class="back" id="back-btn">← 返回文章列表</button>
+  <button class="back" id="back-btn">← 返回</button>
   <h1 id="article-title"></h1>
   <div class="meta" id="article-meta"></div>
   <div id="toc-wrap" style="display:none">

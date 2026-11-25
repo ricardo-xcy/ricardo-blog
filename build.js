@@ -7,8 +7,8 @@ const matter = require("gray-matter");
 const { marked } = require("marked");
 
 const SITE_URL = "https://xcy1.de5.net";
-const SITE_TITLE = "ricardo 的博客";
-const SITE_DESC = "在厦门，写点东西。";
+const SITE_TITLE = "ricardo 的传记";
+const SITE_DESC = "一些事，一些人。";
 
 const root = __dirname;
 const dist = path.join(root, "dist");
@@ -83,6 +83,8 @@ for (const file of files) {
     title: data.title || slug,
     date: fmtDate(data.date),
     description: excerpt,
+    part: data.part || "正史",
+    kind: data.kind || "事",
     tags: normTags(data.tags),
   });
 }
