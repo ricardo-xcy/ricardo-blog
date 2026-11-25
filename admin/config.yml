@@ -18,4 +18,5 @@ collections:
       - {label: "标题", name: "title", widget: "string"}
       - {label: "发布日期", name: "date", widget: "datetime"}
       - {label: "摘要", name: "description", widget: "text", required: false}
+      - {label: "标签", name: "tags", widget: "list", required: false}
       - {label: "正文", name: "body", widget: "markdown"}
