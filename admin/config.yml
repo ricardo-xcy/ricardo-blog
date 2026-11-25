@@ -18,5 +18,18 @@ collections:
       - {label: "标题", name: "title", widget: "string"}
       - {label: "发布日期", name: "date", widget: "datetime"}
       - {label: "摘要", name: "description", widget: "text", required: false}
-      - {label: "标签", name: "tags", widget: "list", required: false}
+      - label: "所属"
+        name: "part"
+        widget: "select"
+        options:
+          - {label: "前传", value: "前传"}
+          - {label: "正史", value: "正史"}
+        default: "前传"
+      - label: "类型"
+        name: "kind"
+        widget: "select"
+        options:
+          - {label: "事", value: "事"}
+          - {label: "人", value: "人"}
+        default: "事"
       - {label: "正文", name: "body", widget: "markdown"}
