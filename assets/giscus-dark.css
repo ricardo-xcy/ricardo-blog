@@ -1,0 +1,5 @@
+@import url("https://giscus.app/themes/dark.css");
+.gsc-comment-box-tabs button.ml-1,
+.gsc-comment-box-tabs > div > button:nth-of-type(2) {
+  display: none !important;
+}
