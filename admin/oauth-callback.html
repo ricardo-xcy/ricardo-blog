@@ -11,10 +11,13 @@
   <script>
     var msg = "";
     try { msg = decodeURIComponent(location.hash.slice(1)); } catch (e) { msg = location.hash.slice(1); }
-    if (window.opener && msg) {
-      window.opener.postMessage(msg, "*");
+    function receiveMessage(e) {
+      window.opener.postMessage(msg, e.origin);
     }
-    window.close();
+    if (window.opener && msg) {
+      window.addEventListener("message", receiveMessage, false);
+      window.opener.postMessage("authorizing:github", "*");
+    }
   </script>
 </body>
 </html>
