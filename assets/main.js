@@ -295,7 +295,7 @@
     s.setAttribute("data-reactions-enabled", "1");
     s.setAttribute("data-emit-metadata", "0");
     s.setAttribute("data-input-position", "bottom");
-    s.setAttribute("data-theme", currentTheme());
+    s.setAttribute("data-theme", "https://xcy1.de5.net/assets/giscus-" + currentTheme() + ".css");
     s.setAttribute("data-lang", "zh-CN");
     s.setAttribute("crossorigin", "anonymous");
     s.async = true;
