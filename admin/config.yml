@@ -1,6 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: ricardo-xcy/ricardo-blog
   branch: main
+  auth_endpoint: https://ricardo-blog.vercel.app/api/auth
 
 site_url: https://xcy1.de5.net
 display_url: https://xcy1.de5.net
