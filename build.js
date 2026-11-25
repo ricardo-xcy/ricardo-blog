@@ -56,6 +56,7 @@ fs.mkdirSync(path.join(dist, "posts"), { recursive: true });
 fs.copyFileSync(path.join(root, "index.html"), path.join(dist, "index.html"));
 fs.copyFileSync(path.join(root, "404.html"), path.join(dist, "404.html"));
 fs.copyFileSync(path.join(root, "_headers"), path.join(dist, "_headers"));
+fs.copyFileSync(path.join(root, "feed.xsl"), path.join(dist, "feed.xsl"));
 fs.cpSync(path.join(root, "assets"), path.join(dist, "assets"), { recursive: true });
 fs.cpSync(path.join(root, "admin"), path.join(dist, "admin"), { recursive: true });
 fs.cpSync(path.join(root, "images"), path.join(dist, "images"), { recursive: true });
@@ -110,6 +111,7 @@ const items = posts
 
 const feed =
   '<?xml version="1.0" encoding="UTF-8"?>\n' +
+  '<?xml-stylesheet type="text/xsl" href="/feed.xsl"?>\n' +
   '<rss version="2.0">\n' +
   "  <channel>\n" +
   "    <title>" + escXml(SITE_TITLE) + "</title>\n" +
