@@ -1,0 +1,21 @@
+backend:
+  name: git-gateway
+  branch: main
+
+site_url: https://xcy1.de5.net
+display_url: https://xcy1.de5.net
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "posts"
+    label: "文章"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}"
+    fields:
+      - {label: "标题", name: "title", widget: "string"}
+      - {label: "发布日期", name: "date", widget: "datetime"}
+      - {label: "摘要", name: "description", widget: "text", required: false}
+      - {label: "正文", name: "body", widget: "markdown"}
