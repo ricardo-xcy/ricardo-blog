@@ -54,6 +54,7 @@ fs.mkdirSync(path.join(dist, "posts"), { recursive: true });
 
 // Copy static files
 fs.copyFileSync(path.join(root, "index.html"), path.join(dist, "index.html"));
+fs.copyFileSync(path.join(root, "404.html"), path.join(dist, "404.html"));
 fs.cpSync(path.join(root, "admin"), path.join(dist, "admin"), { recursive: true });
 fs.cpSync(path.join(root, "images"), path.join(dist, "images"), { recursive: true });
 
