@@ -3,3 +3,224 @@
 .gsc-comment-box-tabs > div > button:nth-of-type(2) {
   display: none !important;
 }
+
+/* Zhihu-style comments, matched to site tokens in index.html (light) */
+main {
+  --color-fg-default: #262626;
+  --color-fg-muted: #8a8378;
+  --color-fg-subtle: #a89f91;
+  --color-canvas-default: #ffffff;
+  --color-canvas-overlay: #ffffff;
+  --color-canvas-inset: #faf8f4;
+  --color-canvas-subtle: #faf8f4;
+  --color-border-default: #e8e2d8;
+  --color-border-muted: #f0ebe2;
+  --color-accent-fg: #1a6fd4;
+  --color-accent-emphasis: #b4552d;
+  --color-accent-muted: rgba(180, 85, 45, 0.4);
+  --color-accent-subtle: #f6e8df;
+  --color-btn-text: #262626;
+  --color-btn-bg: #ffffff;
+  --color-btn-border: #e8e2d8;
+  --color-btn-hover-bg: #f6e8df;
+  --color-btn-hover-border: #e8e2d8;
+  --color-btn-active-bg: #f6e8df;
+  --color-btn-selected-bg: #f6e8df;
+  --color-btn-primary-text: #ffffff;
+  --color-btn-primary-bg: #b4552d;
+  --color-btn-primary-border: #b4552d;
+  --color-btn-primary-hover-bg: #9c4825;
+  --color-btn-primary-hover-border: #9c4825;
+  --color-btn-primary-selected-bg: #9c4825;
+  --color-btn-primary-disabled-text: rgba(255, 255, 255, 0.6);
+  --color-btn-primary-disabled-bg: rgba(180, 85, 45, 0.5);
+  --color-btn-primary-disabled-border: rgba(180, 85, 45, 0.5);
+  --color-action-list-item-default-hover-bg: #f6e8df;
+  --color-segmented-control-bg: #faf8f4;
+  --color-segmented-control-button-bg: #ffffff;
+  --color-segmented-control-button-selected-border: #e8e2d8;
+  --color-input-bg: #ffffff;
+  --color-input-border: #e8e2d8;
+  --color-input-disabled-bg: #faf8f4;
+  --color-input-disabled-fg: #8a8378;
+  --color-neutral-muted: rgba(138, 131, 120, 0.12);
+  --color-social-reaction-bg-hover: #f6e8df;
+  --color-social-reaction-bg-reacted-hover: #f6e8df;
+}
+
+body,
+.gsc-main,
+.markdown-body {
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif !important;
+  color: #262626;
+  line-height: 1.7;
+}
+.gsc-main { background: transparent !important; }
+.gsc-header { color: #8a8378; font-size: 14px; }
+.gsc-comments-count { color: #8a8378; font-weight: 600; }
+
+/* Round avatars */
+.gsc-comment-author-avatar,
+.gsc-reply-author-avatar,
+.gsc-comment-author-avatar img,
+.gsc-reply-author-avatar img,
+img.avatar,
+.avatar {
+  border-radius: 50% !important;
+}
+
+/* Clean card-like comments with hairline dividers */
+.gsc-comments { background: transparent !important; }
+.gsc-comment {
+  background: #ffffff !important;
+  border: 1px solid #e8e2d8 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 12px rgba(60, 40, 20, 0.08);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.gsc-timeline { border-left: none !important; background: transparent !important; }
+.gsc-comment-header {
+  background: transparent !important;
+  border-bottom: none !important;
+  padding: 14px 16px 0 !important;
+}
+.gsc-comment-author-name,
+.gsc-reply-author-name,
+.gsc-comment-author a,
+.gsc-reply-author a {
+  color: #262626 !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  text-decoration: none !important;
+}
+.gsc-comment-header time,
+.gsc-reply-header time {
+  color: #a89f91 !important;
+  font-size: 12px !important;
+}
+.gsc-comment-content,
+.gsc-reply-content {
+  padding: 6px 16px 4px !important;
+}
+.gsc-comment-content .markdown-body,
+.gsc-reply-content .markdown-body {
+  font-size: 15px !important;
+  line-height: 1.75 !important;
+  color: #262626 !important;
+}
+.markdown-body a { color: #1a6fd4 !important; }
+.markdown-body img { border-radius: 8px !important; }
+.markdown-body code,
+.markdown-body pre {
+  background: #faf8f4 !important;
+  border-radius: 8px !important;
+}
+.markdown-body blockquote {
+  border-left: 3px solid #e8e2d8 !important;
+  color: #8a8378 !important;
+}
+
+/* Muted Zhihu-style action row */
+.gsc-comment-footer,
+.gsc-reply-footer {
+  border-top: 1px solid #f0ebe2 !important;
+  background: transparent !important;
+  padding: 8px 16px 12px !important;
+  color: #8a8378 !important;
+  font-size: 13px !important;
+}
+.gsc-comment-footer button,
+.gsc-reply-footer button,
+.gsc-reactions-button,
+.gsc-upvote-button {
+  color: #8a8378 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+}
+.gsc-comment-footer button:hover,
+.gsc-reply-footer button:hover,
+.gsc-reactions-button:hover {
+  color: #b4552d !important;
+  background: #f6e8df !important;
+  border-radius: 999px !important;
+}
+.gsc-social-reaction-summary-item {
+  background: #faf8f4 !important;
+  border: 1px solid #f0ebe2 !important;
+  border-radius: 999px !important;
+  color: #8a8378 !important;
+  font-size: 13px !important;
+}
+.gsc-social-reaction-summary-item.has-reacted {
+  background: #f6e8df !important;
+  border-color: #e8e2d8 !important;
+  color: #b4552d !important;
+}
+
+/* Nested replies clearly indented */
+.gsc-replies {
+  margin: 8px 16px 14px 52px !important;
+  background: #faf8f4 !important;
+  border: 1px solid #f0ebe2 !important;
+  border-radius: 10px !important;
+  padding: 4px 12px !important;
+}
+.gsc-reply {
+  background: transparent !important;
+  border-bottom: 1px solid #f0ebe2 !important;
+  padding: 10px 0 !important;
+}
+.gsc-reply:last-child { border-bottom: none !important; }
+.gsc-reply-header { padding: 0 !important; }
+.gsc-reply-content { padding: 4px 0 !important; }
+.gsc-reply-footer { border-top: none !important; padding: 4px 0 2px !important; }
+
+/* Comment box */
+.gsc-comment-box {
+  background: #ffffff !important;
+  border: 1px solid #e8e2d8 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 12px rgba(60, 40, 20, 0.08);
+  overflow: hidden;
+}
+.gsc-comment-box-tabs {
+  background: #faf8f4 !important;
+  border-bottom: 1px solid #f0ebe2 !important;
+  color: #8a8378 !important;
+  font-size: 14px !important;
+}
+.gsc-comment-box-main { background: #ffffff !important; }
+.gsc-comment-box-textarea {
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  color: #262626 !important;
+  background: #ffffff !important;
+  border: 1px solid #e8e2d8 !important;
+  border-radius: 8px !important;
+}
+.gsc-comment-box-textarea:focus {
+  border-color: #b4552d !important;
+  box-shadow: 0 0 0 3px #f6e8df !important;
+  outline: none !important;
+}
+.gsc-comment-box-buttons .btn,
+.gsc-main .btn {
+  border-radius: 999px !important;
+  font-family: inherit !important;
+}
+.gsc-comment-box-buttons .btn-primary,
+.gsc-main .btn-primary {
+  background: #b4552d !important;
+  border-color: #b4552d !important;
+  color: #ffffff !important;
+}
+.gsc-comment-box-buttons .btn-primary:hover,
+.gsc-main .btn-primary:hover {
+  background: #9c4825 !important;
+  border-color: #9c4825 !important;
+}
+.gsc-pagination-button { border-radius: 999px !important; }
